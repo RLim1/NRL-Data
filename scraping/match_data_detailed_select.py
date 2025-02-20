@@ -4,7 +4,8 @@ import numpy as np
 from utilities.get_detailed_match_data import get_detailed_nrl_data
 
 import sys
-sys.path.append('..')
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import ENVIRONMENT_VARIABLES as EV
 
 variables = [
@@ -18,8 +19,9 @@ variables = [
     "Round"]
 
 
-select_year = 2020
-select_round = 27
+select_year = 2024
+from_round = 1
+to_round = 27
 
 
 
@@ -29,11 +31,12 @@ years = [select_year]
 years_arr = {}
 year = select_year
 
-with open(f"../data/nrl_data_{select_year}.json", 'r') as file:
+with open(f"data/nrl_data_{select_year}.json", 'r') as file:
     data = json.load(file)
     data = data['NRL']
     for year in years:
         years_arr[year] = data[years.index(year)][str(year)]
+
 # Create a DataFrame with columns representing combinations of team and
 # variable names
 df = pd.DataFrame(
@@ -42,7 +45,8 @@ df = pd.DataFrame(
 
 # Iterate over each round (assuming 26 rounds)
 match_json_datas = []
-for round in range(0, select_round):
+for round in range(from_round-1, to_round):
+    print(f'\n---------- SCRAPING ROUND {round+1} ----------')
     try:
         # Extract data for the current round
         round_data = years_arr[year][round][str(round + 1)]
@@ -95,5 +99,5 @@ overall_data = {
 overall_data_json = json.dumps(overall_data, indent=4)
 
 # Write JSON data to a file
-with open(f"../data/nrl_detailed_match_data_{select_year}.json", "w") as file:
+with open(f"data/nrl_detailed_match_data_{select_year}.json", "w") as file:
     file.write(overall_data_json)

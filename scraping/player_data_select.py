@@ -1,6 +1,6 @@
 """
 Webscraper for finding NRL data related to player statistics
-Notes: ~3 min per round
+Notes: ~3-4 min per round
 """
 
 
@@ -10,6 +10,7 @@ import numpy as np
 from utilities.set_up_driver import set_up_driver
 import sys
 import os
+import time
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import ENVIRONMENT_VARIABLES as EV
@@ -47,6 +48,7 @@ for year in years:
     match_json_datas = []
     try:
         for round in range(from_round-1, to_round):
+            start_time = time.time()
             print(f'\n---------- SCRAPING ROUND {round+1} ----------')
             round_data = years_arr[year][round][str(round + 1)]
             round_data_ = []
@@ -120,6 +122,7 @@ for year in years:
                 f"{round}": round_data_
             }
             match_json_datas.append(round_data_op)
+            print(f"Time taken: {(time.time() - start_time) / 60:.2f} minutes")
     except Exception as ex:
         print(f"Error: {ex}")
     year_data_op = {

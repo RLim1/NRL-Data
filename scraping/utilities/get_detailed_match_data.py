@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 from utilities.set_up_driver import set_up_driver
 
 import sys  # noqa
-sys.path.append('..')  # noqa
-sys.path.append('..')  # noqa
+import os  # noqa
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))  # noqa
 import ENVIRONMENT_VARIABLES as EV  # noqa
 
 BARS_DATA: dict = {'time_in_possession': -1,
@@ -59,7 +59,7 @@ def get_detailed_nrl_data(
 
 
     url = f"{EV.NRL_WEBSITE}{year}/round-{round}/{home_team}-v-{away_team}/"
-    print(f"{round} - {url}")
+    print(f"Round: {round} - {url}")
 
     # Webscrape the NRL WEBSITE
     driver = set_up_driver()
