@@ -4,7 +4,7 @@ Webscraper for finding NRL data related to team statistics
 from bs4 import BeautifulSoup
 from utilities.set_up_driver import set_up_driver
 
-def get_nrl_data(round=21, year=2023):
+def get_nrl_data(round=21, year=2023, pregame=False):
     url = f"https://www.nrl.com/draw/?competition=111&round={round}&season={year}"
     # Webscrape the NRL WEBSITE
     driver = set_up_driver() 
@@ -15,10 +15,14 @@ def get_nrl_data(round=21, year=2023):
 
     # get the goodies
     soup = BeautifulSoup(page_source, "html.parser")
-    # Get the NRL data box
-    match_elements = soup.find_all(
-        "div", class_="match o-rounded-box o-shadowed-box")
 
+    # Get the NRL data box. For upcoming games, the class is tagged with 'match--pregame'
+    if pregame:
+        nrl_data_box_class_str = "match o-rounded-box o-shadowed-box match--pregame"
+    else:
+        nrl_data_box_class_str = "match o-rounded-box o-shadowed-box"
+    match_elements = soup.find_all("div", class_=nrl_data_box_class_str)
+    
     # name of html elements to poach from the data to get the nrl specific attributes
     find_data = ["h3", "p", "p", "div", "p", "div", "p"]
     class_data = ["u-visually-hidden", "match-header__title", "match-team__name--home",

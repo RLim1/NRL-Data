@@ -9,10 +9,10 @@ import json
 import time
 
 # Select the year and the amount of rounds 
-select_year = 2024
+select_year = 2025
 from_round = 1
 to_round = 27
-
+pregame = True  # Set to True for future games
 
 
 years = [select_year]
@@ -28,7 +28,7 @@ if __name__ == "__main__":
             print(f"Fetching data for round {round_nu} of {year}")
             try:
                 # Attempt to fetch NRL data for a specific round and year
-                match_json = get_nrl_data(round_nu, year)
+                match_json = get_nrl_data(round_nu, year, pregame)
                 # Append fetched JSON to year's data list
                 year_json_data.append(match_json)
                 print(f"Time taken: {(time.time() - start_time) / 60:.2f} minutes")
